@@ -68,6 +68,7 @@ int main(int argc, char **argv) {
 Options may be `int`, `size_t`, `float`, `double`, or `std::string` and currently support long strings.
 They are invoked like `--long-opt value` (not `--long-opt=value`).
 
+
 ```c++
 Parser p;
 p.add_option(var1, "--long-opt")
@@ -99,6 +100,24 @@ auto something = p.add_positional(var2);
 if (something->found()) {
   // var2 was set
 }
+```
+
+Anything after `--` is considered a positional argument, unless -- follows an option.
+Here, the first `--` is the value for `--option` and will be in `s1`.
+The second `--` marks the beginning of positional arguments. and the string `aa` will be in `s2`.
+
+```c++
+Parser p;
+std::string s1, s2;
+p.add_option(s1, "--option");
+p.add_positional(s2);
+std::cerr << s1;
+std::cerr << s2;
+```
+
+```bash
+$ ./myexe --option -- -- aa
+--aa
 ```
 
 ## Parsing
