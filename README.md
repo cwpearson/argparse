@@ -96,7 +96,7 @@ Use `required()` to require them.
 Parser p;
 p.add_positional(var1)->required();
 auto something = p.add_positional(var2);
-if (something.found()) {
+if (something->found()) {
   // var2 was set
 }
 ```
