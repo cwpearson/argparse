@@ -2,11 +2,7 @@
 
 [![Build Status](https://travis-ci.com/cwpearson/argparse.svg?branch=master)](https://travis-ci.com/cwpearson/argparse)
 
-Simple single-file header-only CLI option parsing for C++.
-* No std::regex
-* No subcommands or grouped commands.
-* Only supports `-s value`/`--long-option value` style for options.
-* Only supports `--long-flag` style for flags.
+Simple single-file header-only CLI option parsing for C++ that does not require a working `std::regex`.
 
 ## Getting Started
 
