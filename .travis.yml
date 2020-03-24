@@ -1,10 +1,6 @@
 dist: bionic
 language: minimal
 
-cache:
-  directories:
-    $HOME/cmake
-
 install:
   - ci/install_deps.sh || travis_terminate 1;
 
