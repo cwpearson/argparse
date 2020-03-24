@@ -1,0 +1,15 @@
+dist: bionic
+language: minimal
+
+cache:
+  directories:
+    $HOME/cmake
+
+install:
+  - ci/install_deps.sh || travis_terminate 1;
+
+script:
+  - mkdir -p build && cd build
+  - cmake ..
+  - make
+  - test/test_all
