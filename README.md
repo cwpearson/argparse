@@ -88,7 +88,8 @@ p.add_option(flag2, "--antother-flag", "-s");
 ## Positional Arguments
 
 Positional arguments are added in order.
-They may be `required()` or not.
+Positional arguments are optional by default.
+Use `required()` to require them.
 `add_positional()` returns a `PosnlBase *` that may be queried with `found()` to see if an optional positional argument was found.
 
 ```c++
