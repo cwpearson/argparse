@@ -9,7 +9,5 @@ install:
   - ci/install_deps.sh || travis_terminate 1;
 
 script:
-  - mkdir -p build && cd build
-  - cmake ..
-  - make
-  - test/test_all
+  - ci/build.sh || travis_terminate 1;
+  - ci/test.sh || travis_terminate 1;
