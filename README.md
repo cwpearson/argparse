@@ -70,7 +70,7 @@ They are invoked like `--long-opt value` (not `--long-opt=value`).
 
 ```c++
 Parser p;
-p.add_option(var1m "--long-opt")
+p.add_option(var1, "--long-opt")
 ```
 
 ## Adding Flags
