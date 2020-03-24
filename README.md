@@ -6,7 +6,7 @@ Simple single-file header-only CLI option parsing for C++ that does not require 
 
 ## Getting Started
 
-Download the latest [`argparse.hpp`](www.google.com) and include it in your project.
+Download the latest [`argparse.hpp`](https://raw.githubusercontent.com/cwpearson/argparse/latest/include/argparse/argparse.hpp) and include it in your project.
 
 ## Example
 
