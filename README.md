@@ -1,5 +1,7 @@
 # argparse
 
+[![Build Status](https://travis-ci.com/cwpearson/argparse.svg?branch=master)](https://travis-ci.com/cwpearson/argparse)
+
 Simple single-file header-only CLI option parsing for C++.
 No subcommands, grouped commands.
 
