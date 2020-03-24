@@ -67,6 +67,59 @@ int main(int argc, char **argv) {
 }
 ```
 
+## Adding Options
+
+Options may be `int`, `size_t`, `float`, `double`, or `std::string` and currently support long strings.
+They are invoked like `--long-opt value` (not `--long-opt=value`).
+
+```c++
+Parser p;
+p.add_option(var1m "--long-opt")
+```
+
+## Adding Flags
+
+Flags are always `bool`s, and currently support long or short strings.
+The boolean variable is ALWAYS set to `true` if the flag is found.
+They are invoked like `--long-flag` (not `--long-flag=true` or `--long-flag true`).
+
+```c++
+Parser p;
+p.add_option(flag1, "--long-flag")
+p.add_option(flag2, "--antother-flag", "-s");
+```
+
+## Positional Arguments
+
+Positional arguments are added in order.
+They may be `required()` or not.
+`add_positional()` returns a `PosnlBase *` that may be queried with `found()` to see if an optional positional argument was found.
+
+```c++
+Parser p;
+p.add_positional(var1)->required();
+auto something = p.add_positional(var2);
+if (something.found()) {
+  // var2 was set
+}
+```
+
+## Parsing
+
+```c++
+Parser p;
+// set up flags, arguments, and options
+p.parse(argc, argv);
+```
+
+`parse()` returns something falsy if there is an error.
+
+Parsing modifies `argc` and `argv` to remove consumed options by default.
+To disable, call `p->no_consume()`.
+
+Parsing will silently skip unrecognized arguments.
+To error instead, call `p->no_unrecognized()`.
+
 ## Features
 
 - [x] Does not require `std::regex`
@@ -86,7 +139,8 @@ int main(int argc, char **argv) {
 
 ## Roadmap
 
-- [ ] Reject duplicate flags / options
+- [ ] Reject duplicate flags / options at run time
+- [ ] Support short option strings
 - [ ] Help string output
 - [ ] support --long-option=value
 - [ ] have the last positional argument fill a vector with remaining
