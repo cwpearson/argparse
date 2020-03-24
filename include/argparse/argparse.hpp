@@ -71,14 +71,16 @@ public:
   virtual bool is_required() = 0;
   virtual PosnlBase *required() = 0;
   virtual void set_val(const std::string &val) = 0;
+  virtual bool found() = 0;
 };
 
 template <typename T> class Positional : public PosnlBase {
   bool required_;
   T *val_;
+  bool found_;
 
 public:
-  Positional(T &val) : required_(false), val_(&val) {}
+  Positional(T &val) : required_(false), val_(&val), found_(false) {}
 
   PosnlBase *required() override {
     required_ = true;
@@ -89,7 +91,12 @@ public:
 
   // use nullpointer type to disambiguate call
   // https://stackoverflow.com/questions/5512910/explicit-specialization-of-template-class-member-function
-  void set_val(const std::string &val) { set_val((T *)nullptr, val); }
+  void set_val(const std::string &val) { 
+    found_ = true;
+    set_val((T *)nullptr, val); 
+  }
+
+  bool found() override {return found_; }
 
 private:
   // https://stackoverflow.com/questions/5512910/explicit-specialization-of-template-class-member-function
@@ -171,13 +178,14 @@ public:
     bool optsOkay = true; // okay to interpret as opt/flag
     for (int i = 1; i < argc; ++i) {
 
-      // '--' indicates only positional arguments follow
-      if (argv[i] == std::string("--")) {
-        optsOkay = false;
-        continue;
-      }
+
       // try interpreting as a flag or option if it looks like one
       if (optsOkay && starts_with(argv[i], "-")) {
+        // '--' indicates only positional arguments follow
+        if (argv[i] == std::string("--")) {
+          optsOkay = false;
+          continue;
+        }
         OptionBase *opt = match_opt(argv[i]);
         if (opt) {
           opt->set_val(argv[i + 1]);
