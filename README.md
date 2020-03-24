@@ -110,10 +110,8 @@ p.parse(argc, argv);
 ```
 
 `parse()` returns something falsy if there is an error.
-
 Parsing modifies `argc` and `argv` to remove consumed options by default.
 To disable, call `p->no_consume()`.
-
 Parsing will silently skip unrecognized arguments.
 To error instead, call `p->no_unrecognized()`.
 
