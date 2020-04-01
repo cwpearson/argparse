@@ -1,12 +1,11 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
-
-
+namespace argparse {
 
 class OptionBase {
 public:
@@ -21,9 +20,7 @@ template <typename T> class Option : public OptionBase {
 public:
   Option(T &val, const std::string &l) : long_(l), val_(&val) {}
   void set_val(const std::string &val) override { set_val((T *)nullptr, val); }
-  const std::string &long_str() override {
-      return long_;
-  }
+  const std::string &long_str() override { return long_; }
 
 private:
   void set_val(size_t *, const std::string &val) { // convert to size_t
@@ -50,20 +47,17 @@ class Flag {
   bool *val_;
 
 public:
-  Flag(bool &val, const std::string &l, const std::string &s) : long_(l), short_(s), val_(&val) {}
+  Flag(bool &val, const std::string &l, const std::string &s)
+      : long_(l), short_(s), val_(&val) {}
 
   const std::string &long_str() const noexcept { return long_; }
   const std::string &short_str() const noexcept { return short_; }
 
   void set() const noexcept { *val_ = true; }
 
-  void help(const std::string &s) {
-    help_ = s;
-  }
+  void help(const std::string &s) { help_ = s; }
 
-  const std::string &help_str() const noexcept {
-    return help_;
-  }
+  const std::string &help_str() const noexcept { return help_; }
 };
 
 class PosnlBase {
@@ -91,12 +85,12 @@ public:
 
   // use nullpointer type to disambiguate call
   // https://stackoverflow.com/questions/5512910/explicit-specialization-of-template-class-member-function
-  void set_val(const std::string &val) { 
+  void set_val(const std::string &val) {
     found_ = true;
-    set_val((T *)nullptr, val); 
+    set_val((T *)nullptr, val);
   }
 
-  bool found() override {return found_; }
+  bool found() override { return found_; }
 
 private:
   // https://stackoverflow.com/questions/5512910/explicit-specialization-of-template-class-member-function
@@ -124,8 +118,8 @@ class Parser {
 
   std::string description_;
   bool noUnrecognized_; // error on unrecognized flags / opts
-  bool help_; // help has been requested
-  bool consume_; // remove consumed values from argc, argv
+  bool help_;           // help has been requested
+  bool consume_;        // remove consumed values from argc, argv
 
   std::vector<OptionBase *> opts_;
   std::vector<Flag> flags_;
@@ -159,25 +153,25 @@ class Parser {
   }
 
 public:
-
   Parser() : noUnrecognized_(false), help_(false), consume_(true) {
     add_flag(help_, "--help", "-h")->help("Print help message");
-  } 
-  Parser(const std::string &description) : description_(description), noUnrecognized_(false), help_(false), consume_(true) {
+  }
+  Parser(const std::string &description)
+      : description_(description), noUnrecognized_(false), help_(false),
+        consume_(true) {
     add_flag(help_, "--help", "-h")->help("Print help message");
-  } 
+  }
 
-  bool parse(int &argc, char ** argv) {
+  bool parse(int &argc, char **argv) {
 
-    std::vector<char*> newArgv;
+    std::vector<char *> newArgv;
     if (argc > 0) {
       newArgv.push_back(argv[0]);
     }
 
-    size_t pi = 0; // positional argument position
+    size_t pi = 0;        // positional argument position
     bool optsOkay = true; // okay to interpret as opt/flag
     for (int i = 1; i < argc; ++i) {
-
 
       // try interpreting as a flag or option if it looks like one
       if (optsOkay && starts_with(argv[i], "-")) {
@@ -208,8 +202,8 @@ public:
           ++pi;
         } else {
           newArgv.push_back(argv[i]);
-          std::cerr << "encountered unexpected positional argument " << pi << ": " << argv[i]
-                    << "\n";
+          std::cerr << "encountered unexpected positional argument " << pi
+                    << ": " << argv[i] << "\n";
         }
       }
     }
@@ -227,7 +221,6 @@ public:
         argv[i] = newArgv[i];
       }
     }
-
 
     return true;
   };
@@ -265,18 +258,14 @@ public:
   }
 
   /*! \brief error on unrecognized flags and options
-  */
-  void no_unrecognized() {
-    noUnrecognized_ = true;
-  }
+   */
+  void no_unrecognized() { noUnrecognized_ = true; }
 
   /*! \brief don't modify argc/argv
-  */
-  void no_consume() {
-    consume_ = false;
-  }
+   */
+  void no_consume() { consume_ = false; }
 
-  bool need_help() const noexcept {
-    return help_;
-  }
+  bool need_help() const noexcept { return help_; }
 };
+
+} // namespace argparse

@@ -3,7 +3,7 @@
 int main(int argc, char **argv) {
 
   // A parser object
-  Parser p;
+  argparse::Parser p;
 
   // Program data corresponding to flags, options, and positional arguments
   bool verbose = false;

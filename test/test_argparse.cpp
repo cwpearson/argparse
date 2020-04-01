@@ -15,7 +15,7 @@ TEST_CASE("argparse") {
     };
     int argc = sizeof(argv) / sizeof(argv[0]);
 
-    Parser p;
+    argparse::Parser p;
 
     bool campi = false;
     size_t x;
@@ -45,7 +45,7 @@ TEST_CASE("argparse") {
   SECTION("no args") {
     char *argv[] = {nullptr};
     int argc = sizeof(argv) / sizeof(argv[0]);
-    Parser p;
+    argparse::Parser p;
     REQUIRE(p.parse(argc, argv));
   }
 
@@ -56,7 +56,7 @@ TEST_CASE("argparse") {
     };
     int argc = sizeof(argv) / sizeof(argv[0]);
 
-    Parser p("a test program");
+    argparse::Parser p("a test program");
     REQUIRE(p.parse(argc, argv));
   }
 
@@ -64,7 +64,7 @@ TEST_CASE("argparse") {
     char *argv[] = {"some-exe"};
     int argc = sizeof(argv) / sizeof(argv[0]);
 
-    Parser p;
+    argparse::Parser p;
     p.no_unrecognized();
     REQUIRE(p.parse(argc, argv));
   }
@@ -73,7 +73,7 @@ TEST_CASE("argparse") {
     char *argv[] = {"some-exe", "-f"};
     int argc = sizeof(argv) / sizeof(argv[0]);
 
-    Parser p;
+    argparse::Parser p;
     p.no_unrecognized();
     REQUIRE(false == p.parse(argc, argv));
   }
@@ -85,7 +85,7 @@ TEST_CASE("argparse") {
     std::string a;
     std::string b;
 
-    Parser p;
+    argparse::Parser p;
     p.add_positional(a)->required();
     p.add_positional(b)->required();
     REQUIRE(false == p.parse(argc, argv));
@@ -98,7 +98,7 @@ TEST_CASE("argparse") {
     std::string a;
     std::string b;
 
-    Parser p;
+    argparse::Parser p;
     REQUIRE(true == p.parse(argc, argv));
     REQUIRE(p.need_help());
 
@@ -112,7 +112,7 @@ TEST_CASE("argparse") {
     std::string a;
     std::string b;
 
-    Parser p;
+    argparse::Parser p;
     REQUIRE(true == p.parse(argc, argv));
     REQUIRE(p.need_help());
   }
@@ -124,7 +124,7 @@ TEST_CASE("argparse") {
     std::string a;
     std::string b;
 
-    Parser p;
+    argparse::Parser p;
     REQUIRE(true == p.parse(argc, argv));
     REQUIRE(p.need_help());
   }

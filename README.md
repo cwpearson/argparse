@@ -16,7 +16,7 @@ Download the latest [`argparse.hpp`](https://raw.githubusercontent.com/cwpearson
 int main(int argc, char **argv) {
 
   // A parser object
-  Parser p;
+  argparse::Parser p;
 
   // Program data corresponding to flags, options, and positional arguments
   bool verbose = false;
@@ -70,7 +70,7 @@ They are invoked like `--long-opt value` (not `--long-opt=value`).
 
 
 ```c++
-Parser p;
+argparse::Parser p;
 p.add_option(var1, "--long-opt")
 ```
 
@@ -81,7 +81,7 @@ The boolean variable is ALWAYS set to `true` if the flag is found.
 They are invoked like `--long-flag` (not `--long-flag=true` or `--long-flag true`).
 
 ```c++
-Parser p;
+argparse::Parser p;
 p.add_option(flag1, "--long-flag")
 p.add_option(flag2, "--antother-flag", "-s");
 ```
@@ -94,7 +94,7 @@ Use `required()` to require them.
 `add_positional()` returns a `PosnlBase *` that may be queried with `found()` to see if an optional positional argument was found.
 
 ```c++
-Parser p;
+argparse::Parser p;
 p.add_positional(var1)->required();
 auto something = p.add_positional(var2);
 if (something->found()) {
@@ -107,7 +107,7 @@ Here, the first `--` is the value for `--option` and will be in `s1`.
 The second `--` marks the beginning of positional arguments. and the string `aa` will be in `s2`.
 
 ```c++
-Parser p;
+argparse::Parser p;
 std::string s1, s2;
 p.add_option(s1, "--option");
 p.add_positional(s2);
@@ -123,7 +123,7 @@ $ ./myexe --option -- -- aa
 ## Parsing
 
 ```c++
-Parser p;
+argparse::Parser p;
 // set up flags, arguments, and options
 p.parse(argc, argv);
 ```
