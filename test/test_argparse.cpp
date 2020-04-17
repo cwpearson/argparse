@@ -6,6 +6,20 @@
 
 TEST_CASE("argparse") {
 
+  SECTION("no args") {
+    char ** argv = nullptr;
+    int argc = 0;
+    argparse::Parser p;
+    REQUIRE(p.parse(argc, argv));
+  }
+
+  SECTION("null argv[0]") {
+    char *argv[] = {nullptr};
+    int argc = sizeof(argv) / sizeof(argv[0]);
+    argparse::Parser p;
+    REQUIRE(p.parse(argc, argv));
+  }
+
   SECTION("types") {
     char *argv[] = {
         "some-exe", "--campi", "--f", "10", "1.7", "1.8",
@@ -40,13 +54,6 @@ TEST_CASE("argparse") {
     REQUIRE(p.need_help() == false);
 
     REQUIRE(argc == 2); // does not use --f or some-exe
-  }
-
-  SECTION("no args") {
-    char *argv[] = {nullptr};
-    int argc = sizeof(argv) / sizeof(argv[0]);
-    argparse::Parser p;
-    REQUIRE(p.parse(argc, argv));
   }
 
 
@@ -95,22 +102,14 @@ TEST_CASE("argparse") {
     char *argv[] = {"some-exe", "-h"};
     int argc = sizeof(argv) / sizeof(argv[0]);
 
-    std::string a;
-    std::string b;
-
     argparse::Parser p;
     REQUIRE(true == p.parse(argc, argv));
     REQUIRE(p.need_help());
-
-    std::cerr << p.help() << "\n";
   }
 
   SECTION("--help") {
     char *argv[] = {"some-exe", "--help"};
     int argc = sizeof(argv) / sizeof(argv[0]);
-
-    std::string a;
-    std::string b;
 
     argparse::Parser p;
     REQUIRE(true == p.parse(argc, argv));
@@ -121,12 +120,50 @@ TEST_CASE("argparse") {
     char *argv[] = {"some-exe", "--help", "--"};
     int argc = sizeof(argv) / sizeof(argv[0]);
 
-    std::string a;
-    std::string b;
-
     argparse::Parser p;
     REQUIRE(true == p.parse(argc, argv));
     REQUIRE(p.need_help());
+  }
+
+  SECTION("double --") {
+    char *argv[] = {"some-exe", "--flag", "--", "--", "aa"};
+    int argc = sizeof(argv) / sizeof(argv[0]);
+
+    std::string a,b;
+    bool flag = false;
+
+    argparse::Parser p;
+    p.add_flag(flag, "--flag");
+    p.add_positional(a);
+    p.add_positional(b);
+
+
+    REQUIRE(true == p.parse(argc, argv));
+    REQUIRE(!p.need_help());
+
+    REQUIRE(a == "--");
+    REQUIRE(b == "aa");
+    REQUIRE(flag == true);
+
+  }
+
+  SECTION("-- in option") {
+    char *argv[] = {"some-exe", "--option", "--", "--", "aa"};
+    int argc = sizeof(argv) / sizeof(argv[0]);
+
+    std::string a, option;
+
+    argparse::Parser p;
+    p.add_option(option, "--option");
+    p.add_positional(a);
+
+
+    REQUIRE(true == p.parse(argc, argv));
+    REQUIRE(!p.need_help());
+
+    REQUIRE(a == "aa");
+    REQUIRE(option == "--");
+
   }
 
 }

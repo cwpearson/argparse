@@ -9,13 +9,13 @@ int main(int argc, char **argv) {
   bool verbose = false;
   std::string toPrint;
   std::string maybePrint;
-  int repeats = 1;
+  int repeats = 2;
 
   // Inform the parser of the program data. It will do type-specific conversion
   // from string.
 
   // An option invoked with `--repeat N`
-  p.add_option(repeats, "--repeat");
+  p.add_option(repeats, "--repeat")->help("how many times to repeat first argument");
   // A flag invoked with `--verbose` or `-v`
   p.add_flag(verbose, "--verbose", "-v");
   // a required positional argument (position 1)

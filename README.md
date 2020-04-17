@@ -22,13 +22,13 @@ int main(int argc, char **argv) {
   bool verbose = false;
   std::string toPrint;
   std::string maybePrint;
-  int repeats = 1;
+  int repeats = 2;
 
   // Inform the parser of the program data. It will do type-specific conversion
   // from string.
 
   // An option invoked with `--repeat N`
-  p.add_option(repeats, "--repeat");
+  p.add_option(repeats, "--repeat")->help("how many times to repeat first argument");
   // A flag invoked with `--verbose` or `-v`
   p.add_flag(verbose, "--verbose", "-v");
   // a required positional argument (position 1)
@@ -65,25 +65,29 @@ int main(int argc, char **argv) {
 
 ## Adding Options
 
-Options may be `int`, `size_t`, `float`, `double`, or `std::string` and currently support long strings.
-They are invoked like `--long-opt value` (not `--long-opt=value`).
+Options may be `int`, `size_t`, `float`, `double`, or `std::string`.
+They are invoked like `--long-opt value` (not `--long-opt=value`) or `-s value`, if provided.
+If they are not present, the value is not modified.
 
 
 ```c++
 argparse::Parser p;
-p.add_option(var1, "--long-opt")
+p.add_option(var1, "--long-opt");
+p.add_option(var2, "--long-opt, -s");
+p.add_option(var3, "--long-opt, -s")->help("a demo option");
 ```
 
 ## Adding Flags
 
 Flags are always `bool`s, and currently support long or short strings.
 The boolean variable is ALWAYS set to `true` if the flag is found.
-They are invoked like `--long-flag` (not `--long-flag=true` or `--long-flag true`).
+They are invoked like `--long-flag` (not `--long-flag=true` or `--long-flag true`) or `-s`, if provided.
 
 ```c++
 argparse::Parser p;
 p.add_option(flag1, "--long-flag")
-p.add_option(flag2, "--antother-flag", "-s");
+p.add_option(flag2, "--another-flag", "-s");
+p.add_option(flag3, "--another-flag", "-s")->help("a demo flag");
 ```
 
 ## Positional Arguments
@@ -102,7 +106,7 @@ if (something->found()) {
 }
 ```
 
-Anything after `--` is considered a positional argument, unless -- follows an option.
+Anything after `--` is considered a positional argument, unless `--` follows an option.
 Here, the first `--` is the value for `--option` and will be in `s1`.
 The second `--` marks the beginning of positional arguments. and the string `aa` will be in `s2`.
 
@@ -150,11 +154,11 @@ To error instead, call `p->no_unrecognized()`.
   - [x] `float`
   - [x] `double`
   - [x] `std::string`
+- [x] Support short option strings
+- [x] Help string output
 
 ## Roadmap
 
 - [ ] Reject duplicate flags / options at run time
-- [ ] Support short option strings
-- [ ] Help string output
 - [ ] support --long-option=value
 - [ ] have the last positional argument fill a vector with remaining
