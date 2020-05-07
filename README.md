@@ -28,7 +28,8 @@ int main(int argc, char **argv) {
   // from string.
 
   // An option invoked with `--repeat N`
-  p.add_option(repeats, "--repeat")->help("how many times to repeat first argument");
+  p.add_option(repeats, "--repeat")
+      ->help("how many times to repeat first argument");
   // A flag invoked with `--verbose` or `-v`
   p.add_flag(verbose, "--verbose", "-v");
   // a required positional argument (position 1)
@@ -40,6 +41,12 @@ int main(int argc, char **argv) {
   if (!p.parse(argc, argv)) {
     std::cerr << p.help();
     exit(EXIT_FAILURE);
+  }
+
+  // If help was requested, print it
+  if (p.need_help()) {
+    std::cerr << p.help();
+    return 0;
   }
 
   // Execute the program logic
