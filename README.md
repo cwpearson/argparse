@@ -16,7 +16,7 @@ Download the latest [`argparse.hpp`](https://raw.githubusercontent.com/cwpearson
 int main(int argc, char **argv) {
 
   // A parser object
-  argparse::Parser p;
+  argparse::Parser p("a cwpearson/argparse-powered CLI app");
 
   // Program data corresponding to flags, options, and positional arguments
   bool verbose = false;
@@ -72,12 +72,12 @@ int main(int argc, char **argv) {
 
 ## Adding Options
 
-Options may be `int`, `size_t`, `float`, `double`, or `std::string`.
+Options may be `int32_t`, `int64_t`, `size_t`, `float`, `double`, or `std::string`.
 They are invoked like `--long-opt value` (not `--long-opt=value`) or `-s value`, if provided.
 If they are not present, the value is not modified.
 
-
 ```c++
+int var1 = 3; // a default value for var1
 argparse::Parser p;
 p.add_option(var1, "--long-opt");
 p.add_option(var2, "--long-opt, -s");
@@ -132,7 +132,6 @@ $ ./myexe --option -- -- aa
 ```
 
 ## Parsing
-
 ```c++
 argparse::Parser p;
 // set up flags, arguments, and options
@@ -144,6 +143,26 @@ Parsing modifies `argc` and `argv` to remove consumed options by default.
 To disable, call `p->no_consume()`.
 Parsing will silently skip unrecognized arguments.
 To error instead, call `p->no_unrecognized()`.
+
+`Parser` provides a constructor that takes a string description.
+This description will be added to the usage string.
+```c++
+argparse::Parser p("a demo argparse CLI app");
+// set up flags, arguments, and options
+p.parse(argc, argv);
+```
+
+## Useage Strings
+A `--help` and `-h` flag are automatically added.
+`parser::need_help()` returns true if either of those flags are provided.
+`parser::help()` returns a string that contains the help output.
+
+```c++
+argparse::Parser p;
+if (p.need_help()) {
+  std::cout << p.help();
+}
+```
 
 ## Features
 
@@ -167,6 +186,7 @@ To error instead, call `p->no_unrecognized()`.
 
 ## Roadmap
 
-- [ ] Reject duplicate flags / options at run time
-- [ ] support --long-option=value
-- [ ] have the last positional argument fill a vector with remaining
+- [ ] Runtime error if duplicate flags or options are defined
+- [ ] support `--long-option=value`
+- [ ] allow the last positional argument to fill an `std::vector`
+- [ ] improve help formatting
