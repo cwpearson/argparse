@@ -36,6 +36,7 @@ TEST_CASE("argparse") {
     double d;
     float f;
     int i;
+    int64_t i64;
     std::string s;
     p.add_flag(campi, "--campi");
     p.add_positional(x);
@@ -43,6 +44,7 @@ TEST_CASE("argparse") {
     p.add_positional(f);
     p.add_positional(s);
     p.add_positional(i);
+    p.add_positional(i64);
     REQUIRE(p.parse(argc, argv));
 
     REQUIRE(campi == true);

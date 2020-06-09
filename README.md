@@ -156,7 +156,8 @@ To error instead, call `p->no_unrecognized()`.
 - [x] `--` to stop parsing options and flags
 - [x] modify `argc`/`argv` (disable with `Parser::no_consume()`)
 - Option/Positional Argument Types
-  - [x] `int`
+  - [x] `int32_t`
+  - [x] `int64_t`
   - [x] `size_t`
   - [x] `float`
   - [x] `double`

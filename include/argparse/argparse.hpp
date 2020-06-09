@@ -80,7 +80,10 @@ private:
   void set_val(float *, const std::string &val) { // convert to float
     *val_ = std::stof(val);
   }
-  void set_val(int *, const std::string &val) { // convert to int
+  void set_val(int32_t *, const std::string &val) { // convert to int32_t
+    *val_ = std::stoi(val);
+  }
+  void set_val(int64_t *, const std::string &val) { // convert to int64_t
     *val_ = std::stoi(val);
   }
   void set_val(std::string *, const std::string &val) { // convert to string
@@ -162,7 +165,10 @@ private:
   void set_val(float *, const std::string &val) { // convert to float
     *val_ = std::stof(val);
   }
-  void set_val(int *, const std::string &val) { // convert to int
+  void set_val(int32_t *, const std::string &val) { // convert to int32_t
+    *val_ = std::stoi(val);
+  }
+  void set_val(int64_t *, const std::string &val) { // convert to int64_t
     *val_ = std::stoi(val);
   }
   void set_val(std::string *, const std::string &val) { // convert to string
@@ -248,8 +254,8 @@ public:
         // '--' indicates only positional arguments follow
         // the second '--' should be interpreted as a positional argument
         if (argv[i] == std::string("--")) {
-            optsOkay = false;
-            continue;
+          optsOkay = false;
+          continue;
         }
         OptionBase *opt = match_opt(argv[i]);
         if (opt) {
