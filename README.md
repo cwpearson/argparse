@@ -167,7 +167,7 @@ if (p.need_help()) {
 ## Features
 
 - [x] Does not require `std::regex`
-- [x] allow (default) / disallow (`Parser::no_unrecognize()`) unrecognized options and flags
+- [x] allow (default) / disallow (`Parser::no_unrecognized()`) unrecognized options and flags
 - [x] optional/required (`PosnlBase::required()`) positional arguments
 - [x] flags with `-s`, `--long-flag` formats
 - [x] options with `--long-opt val` format
