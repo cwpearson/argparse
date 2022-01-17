@@ -1,3 +1,5 @@
+// copyright Carl Pearson, 2022
+
 #include "catch2/catch.hpp"
 
 #include <iostream>
@@ -7,7 +9,7 @@
 TEST_CASE("argparse") {
 
   SECTION("no args") {
-    char ** argv = nullptr;
+    char **argv = nullptr;
     int argc = 0;
     argparse::Parser p;
     REQUIRE(p.parse(argc, argv));
@@ -22,10 +24,9 @@ TEST_CASE("argparse") {
 
   SECTION("types") {
     char *argv[] = {
-        "some-exe", "--campi", "--f", "10", "1.7", "1.8",
+        "some-exe",   "--campi", "--f", "10", "1.7", "1.8",
         "--", // stop looking for options
-        "--a string",
-        "-6",
+        "--a string", "-6",
     };
     int argc = sizeof(argv) / sizeof(argv[0]);
 
@@ -57,7 +58,6 @@ TEST_CASE("argparse") {
 
     REQUIRE(argc == 2); // does not use --f or some-exe
   }
-
 
   SECTION("description") {
     char *argv[] = {
@@ -131,7 +131,7 @@ TEST_CASE("argparse") {
     char *argv[] = {"some-exe", "--flag", "--", "--", "aa"};
     int argc = sizeof(argv) / sizeof(argv[0]);
 
-    std::string a,b;
+    std::string a, b;
     bool flag = false;
 
     argparse::Parser p;
@@ -139,14 +139,12 @@ TEST_CASE("argparse") {
     p.add_positional(a);
     p.add_positional(b);
 
-
     REQUIRE(true == p.parse(argc, argv));
     REQUIRE(!p.need_help());
 
     REQUIRE(a == "--");
     REQUIRE(b == "aa");
     REQUIRE(flag == true);
-
   }
 
   SECTION("-- in option") {
@@ -159,13 +157,10 @@ TEST_CASE("argparse") {
     p.add_option(option, "--option");
     p.add_positional(a);
 
-
     REQUIRE(true == p.parse(argc, argv));
     REQUIRE(!p.need_help());
 
     REQUIRE(a == "aa");
     REQUIRE(option == "--");
-
   }
-
 }

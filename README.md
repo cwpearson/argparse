@@ -16,7 +16,7 @@ Download the latest [`argparse.hpp`](https://raw.githubusercontent.com/cwpearson
 int main(int argc, char **argv) {
 
   // A parser object
-  argparse::Parser p("a cwpearson/argparse-powered CLI app");
+  argparse::Parser p;
 
   // Program data corresponding to flags, options, and positional arguments
   bool verbose = false;
@@ -24,12 +24,10 @@ int main(int argc, char **argv) {
   std::string maybePrint;
   int repeats = 2;
 
-  // Inform the parser of the program data. It will do type-specific conversion
-  // from string.
+  // Inform the parser of the program data. It will do type-specific conversionfrom string.
 
   // An option invoked with `--repeat N`
-  p.add_option(repeats, "--repeat")
-      ->help("how many times to repeat first argument");
+  p.add_option(repeats, "--repeat")->help("how many times to repeat first argument");
   // A flag invoked with `--verbose` or `-v`
   p.add_flag(verbose, "--verbose", "-v");
   // a required positional argument (position 1)
@@ -190,3 +188,9 @@ if (p.need_help()) {
 - [ ] support `--long-option=value`
 - [ ] allow the last positional argument to fill an `std::vector`
 - [ ] improve help formatting
+
+## License and Copyright
+
+Copyright Carl Pearson 2022
+
+Licensed under Apache 2.0 (see LICENSE for details).

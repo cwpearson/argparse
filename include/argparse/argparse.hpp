@@ -1,3 +1,5 @@
+// copyright Carl Pearson, 2022
+
 #pragma once
 
 #include <iostream>
@@ -100,8 +102,7 @@ class Flag {
   bool *val_;
 
 public:
-  Flag(bool &val, const std::string &l, const std::string &s)
-      : long_(l), short_(s), val_(&val) {}
+  Flag(bool &val, const std::string &l, const std::string &s) : long_(l), short_(s), val_(&val) {}
 
   const std::string &long_str() const noexcept { return long_; }
   const std::string &short_str() const noexcept { return short_; }
@@ -153,8 +154,7 @@ public:
 private:
   const char *type_str() override { return detail::type_str<T>(); }
 
-  template <typename C>
-  void get_as(C *, const std::string &val) { // to be overridden
+  template <typename C> void get_as(C *, const std::string &val) { // to be overridden
   }
   void set_val(size_t *, const std::string &val) { // convert to size_t
     *val_ = std::stoull(val);
@@ -222,13 +222,12 @@ class Parser {
 
 public:
   Parser()
-      : description_("an argparse-powered program"), noUnrecognized_(false),
-        help_(false), consume_(true) {
+      : description_("an argparse-powered program"), noUnrecognized_(false), help_(false),
+        consume_(true) {
     add_flag(help_, "--help", "-h")->help("Print help message");
   }
   Parser(const std::string &description)
-      : description_(description), noUnrecognized_(false), help_(false),
-        consume_(true) {
+      : description_(description), noUnrecognized_(false), help_(false), consume_(true) {
     add_flag(help_, "--help", "-h")->help("Print help message");
   }
 
@@ -279,8 +278,8 @@ public:
           ++pi;
         } else {
           newArgv.push_back(argv[i]);
-          std::cerr << "encountered unexpected positional argument " << pi
-                    << ": " << argv[i] << "\n";
+          std::cerr << "encountered unexpected positional argument " << pi << ": " << argv[i]
+                    << "\n";
         }
       }
     }
@@ -303,8 +302,7 @@ public:
   };
 
   template <typename T>
-  OptionBase *add_option(T &val, const std::string &l,
-                         const std::string &s = "") {
+  OptionBase *add_option(T &val, const std::string &l, const std::string &s = "") {
     opts_.push_back(new Option<T>(val, l, s));
     return opts_.back();
   }

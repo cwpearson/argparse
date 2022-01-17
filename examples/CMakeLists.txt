@@ -1,3 +1,5 @@
+# copyright Carl Pearson, 2022
+
 macro(add_args tgt)
 target_compile_options(
   ${tgt}

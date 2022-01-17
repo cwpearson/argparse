@@ -1,3 +1,5 @@
+# copyright Carl Pearson, 2022
+
 # 3.0: version
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
